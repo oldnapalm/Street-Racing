@@ -798,7 +798,7 @@ namespace Street_Races
 
             List<string> CarsForFilling = new List<string>();
             int Filler = 0;
-            StreetRaces.MaxRacers = StreetRaces.SetupCarsNumber.IndexToItem(StreetRaces.SetupCarsNumber.Index);
+            StreetRaces.MaxRacers = (int)StreetRaces.SetupCarsNumber.Items[StreetRaces.SetupCarsNumber.Index];
 
             Vector3 position = StreetRaces.RaceWaypoints[0];
             int number = -1;

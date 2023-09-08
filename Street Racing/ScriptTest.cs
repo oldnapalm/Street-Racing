@@ -170,6 +170,7 @@ namespace Street_Races
             Tick += OnTick;
             KeyDown += OnKeyDown;
             KeyUp += OnKeyUp;
+            Aborted += ResetEverything;
 
             LoadRaceTriggers();
 
@@ -266,7 +267,7 @@ namespace Street_Races
 
                     _menuPool.CloseAllMenus();
                     if (RealMoneyBetList[MoneyBet.Index] != 0) Game.Player.Money -= RealMoneyBetList[MoneyBet.Index];
-                    Prize = (RealMoneyBetList[MoneyBet.Index] * (SetupCarsNumber.IndexToItem(SetupCarsNumber.Index) + 1));
+                    Prize = (RealMoneyBetList[MoneyBet.Index] * ((int)SetupCarsNumber.Items[SetupCarsNumber.Index] + 1));
                     Bet = RealMoneyBetList[MoneyBet.Index];
                     Script.Wait(1000);
                 }
@@ -412,7 +413,7 @@ namespace Street_Races
 
         void HandlePositions()
         {
-            Laps = SetupLaps.IndexToItem(SetupLaps.Index);
+            Laps = (int)SetupLaps.Items[SetupLaps.Index];
 
             string text = " ";
             int CurrentPositionChecked = 1 + RacersFinished;
@@ -659,7 +660,8 @@ namespace Street_Races
                             {
                                 DisplayHelpTextThisFrame("Get back to your car.");
 
-                                if (Game.Player.Character.Position.DistanceTo(Util.GetPlayerRacer().car.Position) > 15f)
+                                //if (Game.Player.Character.Position.DistanceTo(Util.GetPlayerRacer().car.Position) > 15f)
+                                if (Game.IsControlJustPressed(2, GTA.Control.Context))
                                 {
                                     RaceStatus = RacePhase.NotRacing;
                                     //UI.Notify("");
@@ -684,11 +686,11 @@ namespace Street_Races
             {
                 foreach (Racer racer in Racers) racer.Tick();
 
-                if (MainGameTimeRef < Game.GameTime)
-                {
+                //if (MainGameTimeRef < Game.GameTime)
+                //{
                     foreach (Racer racer in Racers) racer.ProcessRace();
-                    MainGameTimeRef = Game.GameTime + 100;
-                }
+                //    MainGameTimeRef = Game.GameTime + 100;
+                //}
             }
             Util.HandleNotifications();
 
@@ -841,8 +843,8 @@ namespace Street_Races
             }
         }
         public static int BaseDrivingStyle = 4 + 8 +16+32+ 512 + 262144;
-        //Never used
-        public void ResetEverything()
+
+        public void ResetEverything(object sender, EventArgs e)
         {
             Game.FadeScreenIn(300);
             CleanRace();
